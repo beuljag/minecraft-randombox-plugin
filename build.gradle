@@ -1,0 +1,73 @@
+plugins {
+    id 'java'
+    id 'xyz.jpenilla.run-paper' version '2.3.1'
+}
+
+group = 'net.teujaem'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'papermc-repo'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+}
+
+dependencies {
+    // 서버 버전: 26.1.2 (팀 확정)
+    // 26.x 부터 Paper 아티팩트 형식이 바뀌었다. -R0.1-SNAPSHOT 이 아니라 build.NN-stable.
+    compileOnly 'io.papermc.paper:paper-api:26.1.2.build.74-stable'
+
+    // 프레임워크와 hibernate 는 런타임에 SP-Framework 가 이미 로드한다.
+    // implementation 으로 넣으면 클래스 중복 로딩 위험 -> 반드시 compileOnly.
+    compileOnly files('libs/SP-Framework-1.0.0-plugin-base.jar')
+    compileOnly 'org.hibernate.orm:hibernate-core:6.6.5.Final'
+}
+
+// OneDrive 폴더 안에서는 OneDrive가 build/ 를 잡고 있어서 재컴파일이
+// 'Unable to delete directory' 로 실패할 때가 있다. 그럴 때 출력 위치를 밖으로 뺀다.
+//   gradlew build -PoutDir=C:/temp/randombox-build
+if (project.hasProperty('outDir')) {
+    layout.buildDirectory = file(project.property('outDir'))
+}
+
+// 서버(26.1.2)가 Java 25 위에서 돌기 때문에 여기도 25 로 맞춘다.
+// 설치돼 있지 않으면 Gradle 이 받아온다 (settings.gradle 의 foojay resolver).
+def targetJavaVersion = 25
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xlint:deprecation'
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release.set(targetJavaVersion)
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+tasks {
+    runServer {
+        minecraftVersion('26.1.2')
+
+        // RandomBox 는 SP-Framework 없이는 뜨지 않는다(depend). 테스트 서버에 같이 넣어준다.
+        pluginJars(files('libs/SP-Framework-1.0.0-plugin-base.jar'))
+
+        // 서버 폴더를 OneDrive 밖으로 뺄 수 있게. DB 비밀번호가 든 config.yaml 이
+        // 동기화되는 걸 막고, OneDrive 파일 잠금 문제도 피한다.
+        //   gradlew runServer -PrunDir=C:/temp/rbtest-server
+        if (project.hasProperty('runDir')) {
+            runDirectory = file(project.property('runDir'))
+        }
+    }
+}

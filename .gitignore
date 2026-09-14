@@ -1,0 +1,25 @@
+# Gradle
+.gradle/
+build/
+dist/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 빌드 산출물
+*.class
+
+# SP-Framework 는 서드파티 배포본이라 저장소에 포함하지 않는다.
+# libs/README.md 참고.
+libs/*.jar
+
+# 내부 작업 문서 (팀 내부 내용 포함)
+TESTING.md
+작업정리.md
+PROGRESS.md

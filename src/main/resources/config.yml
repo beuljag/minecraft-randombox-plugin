@@ -1,0 +1,24 @@
+# RandomBox
+# 박스/보상 데이터는 전부 MariaDB 에 저장된다.
+# 박스 내용 자체는 이 파일이 아니라 boxes.yml 에서 다룬다. (/rbox import, /rbox export)
+#
+# DB 접속 정보는 여기가 아니라 SP-Framework 의 config.yaml 에서 관리한다.
+
+# ─── 표시/동작 ────────────────────────────────────────────────
+
+# 채팅 접두사
+prefix: "&6[랜덤박스] &f"
+
+# 개봉 애니메이션 총 길이(틱). 20틱 = 1초
+animation-ticks: 60
+
+# 플레이어 인벤토리가 가득 찼을 때 보상을 바닥에 떨어뜨릴지 여부
+# false 면 개봉이 취소되고 키도 소모되지 않는다.
+drop-when-full: true
+
+# 서버가 켜질 때마다 boxes.yml 을 DB 로 자동 import 할지 여부.
+#
+#   true  = boxes.yml 이 항상 정답. 파일로만 관리하고 싶을 때.
+#           ※ 인게임 GUI(/rbox edit)로 고친 내용은 다음 재시작 때 파일 내용으로 덮어써진다.
+#   false = DB 가 정답. GUI 로 관리하고, 파일은 /rbox import 를 칠 때만 반영된다. (권장)
+auto-import-on-start: false

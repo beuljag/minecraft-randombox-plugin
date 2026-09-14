@@ -1,0 +1,21 @@
+name: RandomBox
+version: '${version}'
+main: net.teujaem.randombox.RandomBoxPlugin
+api-version: '26.1'
+depend: [SP-Framework]
+authors: [teujaem]
+description: DB(MariaDB) 기반 랜덤박스. 설정은 전부 인게임에서.
+
+commands:
+  randombox:
+    description: 랜덤박스 관리/사용
+    aliases: [rbox, rb]
+    usage: /rbox help
+
+permissions:
+  randombox.admin:
+    description: 랜덤박스 생성/편집/지급 권한
+    default: op
+  randombox.use:
+    description: 랜덤박스 개봉 권한
+    default: true

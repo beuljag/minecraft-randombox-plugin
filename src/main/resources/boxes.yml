@@ -1,0 +1,71 @@
+# ─────────────────────────────────────────────────────────────
+#  RandomBox — 파일로 박스 설정하기
+# ─────────────────────────────────────────────────────────────
+#
+#  ※ 실제 데이터는 MariaDB 에 저장된다. 이 파일은 그냥 입출력 창구다.
+#     여기를 고쳐도 /rbox import 를 하기 전까지는 게임에 반영되지 않는다.
+#
+#    /rbox import <id|all>   이 파일 -> DB   (파일 내용이 이김)
+#    /rbox export <id|all>   DB -> 이 파일   (DB 내용이 이김)
+#
+#  인게임 GUI(/rbox edit)로 만든 걸 /rbox export 로 뽑아보면
+#  형식을 눈으로 확인할 수 있다. 그게 제일 빠르다.
+#
+# ─── 아이템 적는 법 ───────────────────────────────────────────
+#
+#    item:
+#      material: DIAMOND_SWORD   # 필수. 마인크래프트 아이템 이름
+#      amount: 1                 # 생략하면 1
+#      name: "&b서리검"          # & 색코드 사용
+#      lore:
+#        - "&7전설의 검"
+#      enchants:                 # 인챈트 이름: 레벨
+#        sharpness: 5
+#        unbreaking: 3
+#      unbreakable: true
+#      custom-model-data: 1001
+#
+#  포션·머리·주민거래처럼 위 형식으로 표현이 안 되는 아이템은
+#  export 할 때 'data:' 줄(Base64)이 자동으로 붙는다.
+#  그 줄이 있으면 위 항목들은 무시되니, 손으로 고칠 거면 data 줄을 지울 것.
+#
+# ─── 예시 (그대로 쓰려면 아래 주석을 풀고 boxes: {} 를 지우세요) ──
+#
+# boxes:
+#   starter:
+#     display-name: "&6초보자 상자"
+#     roll-count: 1            # 한 번에 뽑는 보상 개수
+#
+#     box-item:                # 상자로 쓸 아이템. 생략하면 기본 상자(CHEST)
+#       material: ENDER_CHEST
+#       name: "&5초보자 상자"
+#     broadcast: false         # 당첨 결과를 전체 방송
+#     animate: true            # 룰렛 연출
+#     preview-on-swap: true    # 상자 들고 F 누르면 확률표
+#
+#     rewards:                 # weight 비율이 곧 확률이다
+#       - weight: 50
+#         item:
+#           material: IRON_INGOT
+#           amount: 8
+#
+#       - weight: 30
+#         item:
+#           material: DIAMOND
+#           amount: 2
+#         label: "&b다이아몬드 2개"
+#
+#       - weight: 15
+#         item:
+#           material: DIAMOND_SWORD
+#           name: "&b서리검"
+#           enchants:
+#             sharpness: 3
+#
+#       - weight: 5             # 아이템 없이 명령어만 주는 보상
+#         command: "give %player% netherite_ingot 1"
+#         label: "&5네더라이트 주괴"
+#
+# ─────────────────────────────────────────────────────────────
+
+boxes: {}
