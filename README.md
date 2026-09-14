@@ -2,8 +2,8 @@
 
 ![Minecraft](https://img.shields.io/badge/Minecraft-Paper%2026.1.x-brightgreen)
 ![Java](https://img.shields.io/badge/Java-25%2B-orange)
-[![Release](https://img.shields.io/github/v/release/beuljag/randombox)](https://github.com/beuljag/randombox/releases/latest)
-[![License](https://img.shields.io/github/license/beuljag/randombox)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/beuljag/minecraft-randombox-plugin)](https://github.com/beuljag/minecraft-randombox-plugin/releases/latest)
+[![License](https://img.shields.io/github/license/beuljag/minecraft-randombox-plugin)](LICENSE)
 
 마인크래프트 랜덤박스(뽑기 상자) 플러그인.
 **설정 파일을 건드릴 필요 없이 게임 안에서 전부 만들고, 데이터는 MariaDB 에 저장한다.**
