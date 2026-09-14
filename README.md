@@ -1,8 +1,37 @@
 # RandomBox
 
-마인크래프트 랜덤박스(뽑기 상자) 플러그인. SP-Framework 위에서 돈다.
+![Minecraft](https://img.shields.io/badge/Minecraft-Paper%2026.1.x-brightgreen)
+![Java](https://img.shields.io/badge/Java-25%2B-orange)
+[![Release](https://img.shields.io/github/v/release/beuljag/randombox)](https://github.com/beuljag/randombox/releases/latest)
+[![License](https://img.shields.io/github/license/beuljag/randombox)](LICENSE)
 
-**게임 안에서 전부 설정하고, 데이터는 MariaDB 에 저장한다.**
+마인크래프트 랜덤박스(뽑기 상자) 플러그인.
+**설정 파일을 건드릴 필요 없이 게임 안에서 전부 만들고, 데이터는 MariaDB 에 저장한다.**
+
+## 주요 기능
+
+- **인게임 GUI 편집** — 보상 추가·가중치·이름·연출까지 클릭과 채팅으로 끝낸다
+- **가중치 확률** — 합계가 자동으로 분모가 되므로 보상을 추가해도 다른 값을 안 건드려도 된다
+- **10연차 개봉** — 웅크리고 우클릭하면 10개를 한 번에, 왼쪽부터 확정되는 연출
+- **확률 미리보기** — 상자를 들고 `F` 키를 누르면 확률표가 뜬다
+- **명령어 보상** — 아이템뿐 아니라 명령어도 당첨 보상으로 지정할 수 있다
+- **yml import/export** — GUI 가 싫으면 파일로 편집하고 불러올 수 있다
+- **MariaDB 저장** — 테이블 자동 생성. 서버를 여러 대 굴려도 데이터가 공유된다
+
+## 목차
+
+- [요구사항](#요구사항)
+- [설치](#설치)
+- [명령어](#명령어)
+- [박스 만들기](#박스-만들기)
+- [여는 방법](#여는-방법)
+- [yml 로 설정하기](#yml-로-설정하기)
+- [config.yml](#configyml)
+- [빌드](#빌드)
+- [문제가 생기면](#문제가-생기면)
+- [라이선스](#라이선스)
+
+---
 
 ## 요구사항
 
@@ -11,47 +40,19 @@
 | 서버 | Paper **26.1.x** |
 | Java | **25** 이상 |
 | DB | MariaDB (빈 데이터베이스 하나) |
-| 선행 플러그인 | **SP-Framework** |
+| 선행 플러그인 | **[SP-Framework](https://github.com/daeil0102/SP-Framework)** |
 
-DB 접속 정보는 **SP-Framework 의 `config.yaml`** 에서 관리한다. 이 플러그인에는 DB 설정이 없다.
+DB 접속 정보는 **SP-Framework 의 `config.yml`** 에서 관리한다. 이 플러그인에는 DB 설정이 없다.
 테이블(`rb_box` `rb_reward` `rb_open_log`)은 첫 실행에 자동 생성된다.
 
 ---
 
-## 빌드
-
-> ⚠ **`libs/` 에 `SP-Framework-1.0.0-plugin-base.jar` 를 먼저 넣어야 한다.**
-> SP-Framework 는 이 저장소에 포함되어 있지 않다 (별도 배포본). 자세한 건
-> [libs/README.md](libs/README.md) 참고.
-
-## 빌드
-
-JDK **25** 가 필요하다. (없어도 Gradle toolchain 이 자동으로 받아온다)
-
-```bash
-./gradlew build
-```
-
-→ `build/libs/randombox-1.0.0.jar`
-
-> **Gradle 이 JDK 25 에서 실행되지 않는 경우** — Gradle 8.14.3 은 JDK 25 위에서 못 돈다.
-> Gradle 실행만 JDK 21~24 로 내리면 된다. 컴파일 타깃은 toolchain 이 25 로 맞춘다.
-> ```bash
-> ./gradlew build "-Dorg.gradle.java.home=<JDK 21~24 경로>"
-> ```
->
-> **`Unable to delete directory 'build'` 로 실패하는 경우** — OneDrive·Dropbox 같은
-> 동기화 폴더 안에서 흔히 난다. 출력 위치를 밖으로 빼면 된다.
-> ```bash
-> ./gradlew build -PoutDir=/tmp/randombox-build
-> ```
-
-테스트 서버 실행: `./gradlew runServer`
-
 ## 설치
 
 [Releases](../../releases) 에서 `randombox-1.0.0.jar` 를 받는다.
-**SP-Framework 는 별도로 구해야 한다** (이 저장소에 없음).
+
+**SP-Framework 는 따로 받아야 한다** — 이 저장소에 포함되어 있지 않다.
+→ [daeil0102/SP-Framework](https://github.com/daeil0102/SP-Framework) (Paper 1.17+ 는 `-base` 빌드)
 
 ```
 plugins/
@@ -209,12 +210,40 @@ auto-import-on-start: false
 
 ---
 
+## 빌드
+
+> ⚠ **`libs/` 에 `SP-Framework-1.0.0-plugin-base.jar` 를 먼저 넣어야 한다.**
+> 이 저장소에 포함되어 있지 않다. [daeil0102/SP-Framework](https://github.com/daeil0102/SP-Framework) 에서 받을 것.
+> 자세한 건 [libs/README.md](libs/README.md) 참고.
+
+JDK **25** 가 필요하다. (없어도 Gradle toolchain 이 자동으로 받아온다)
+
+```bash
+./gradlew build
+```
+
+→ `build/libs/randombox-1.0.0.jar`
+
+> **Gradle 이 JDK 25 에서 실행되지 않는 경우** — Gradle 8.14.3 은 JDK 25 위에서 못 돈다.
+> Gradle 실행만 JDK 21~24 로 내리면 된다. 컴파일 타깃은 toolchain 이 25 로 맞춘다.
+> ```bash
+> ./gradlew build "-Dorg.gradle.java.home=<JDK 21~24 경로>"
+> ```
+>
+> **`Unable to delete directory 'build'` 로 실패하는 경우** — OneDrive·Dropbox 같은
+> 동기화 폴더 안에서 흔히 난다. 출력 위치를 밖으로 빼면 된다.
+> ```bash
+> ./gradlew build -PoutDir=/tmp/randombox-build
+> ```
+
+테스트 서버 실행: `./gradlew runServer`
+
 ## 문제가 생기면
 
 | 증상 | 확인 |
 |---|---|
 | 플러그인이 안 뜸 | SP-Framework 가 먼저 뜨는지. 콘솔에 `DB:` 줄이 있는지 |
-| DB 연결 실패 | **SP-Framework 의** `config.yaml` — host / port / user / password |
+| DB 연결 실패 | **SP-Framework 의** `config.yml` — host / port / user / password |
 | 보상이 종이로 보임 | 아이템 데이터를 못 읽은 것. MC 버전이 크게 바뀌면 생길 수 있다 |
 | import 실패 | 에러 메시지에 어느 박스 몇 번째 보상인지 나온다 |
 | 서버 켠 채로 jar 교체 후 오류 | `NoClassDefFoundError` 가 난다. **끄고 교체할 것** |
